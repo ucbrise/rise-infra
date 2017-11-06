@@ -1,0 +1,33 @@
+- name: Python general
+  apt: pkg= {{item}} state=present update-cache=yes force=yes 
+  with_items:
+    - python-all-dev 
+    - python3-all-dev
+    - python-stdeb
+    - python-nose
+
+- name: Python Analysis
+  apt: pkg={{item}} state=present update-cache=yes force=yes
+  with_items:
+    - python-numpy 
+    - python3-numpy 
+    - python-numpy-doc
+    - python-scipy 
+    - python3-scipy 
+    - python-scipy-doc
+    - python-matplotlib 
+    - python3-matplotlib 
+    - python-matplotlib-data 
+    - python-matplotlib-venn 
+    - python-scitools 
+    - python-matplotlib-doc
+
+- name: Python AWS
+  apt: pkg={{item}} state=present update-cache=yes force=yes
+  with_items:
+    - aws-status 
+    - awscli 
+    - s3cmd
+
+- name: Python Virtualenv
+  apt: pkg=virtualenv state=present update-cache=yes force=yes

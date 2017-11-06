@@ -1,0 +1,29 @@
+- name: Add vbox repo
+  shell: echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" > /etc/apt/sources.list.d/virtualbox.list
+
+- name: Add vbox 2016 key
+  apt_key:
+    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    state: present
+
+- name: Add vbox key
+  apt_key:
+    url: https://www.virtualbox.org/download/oracle_vbox.asc
+    state: present
+
+- name: Install Virtualbox
+  apt: pkg={{item}} state=present update-cache=yes force=yes 
+  with_items:
+   - virtualbox-5.1
+
+- name: Download extension pack
+  shell: cd /usr/share/virtualbox && wget http://download.virtualbox.org/virtualbox/5.1.18/Oracle_VM_VirtualBox_Extension_Pack-5.1.18-114002.vbox-extpack #&& VBoxManage --accept-license=715c7246dc0f779ceab39446812362b2f9bf64a55ed5d3a905f053cfab36da9e 
+  args:
+   creates: /usr/share/virtualbox/Oracle_VM_VirtualBox_Extension_Pack-5.1.18-114002.vbox-extpack
+
+- name: Install extension pack
+  shell: cd /usr/share/virtualbox && VBoxManage extpack install /usr/share/virtualbox/Oracle_VM_VirtualBox_Extension_Pack-5.1.18-114002.vbox-extpack --accept-license=715c7246dc0f779ceab39446812362b2f9bf64a55ed5d3a905f053cfab36da9e
+
+
+- name: Setup vagrant with virtualbox
+  shell: cd /tmp && wget https://releases.hashicorp.com/vagrant/1.9.3/vagrant_1.9.3_x86_64.deb && dpkg -i vagr* && rm vagr*

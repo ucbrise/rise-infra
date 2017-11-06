@@ -1,0 +1,8 @@
+- name: Clang 
+  apt: pkg={{item}} state=present update_cache=yes
+  with_items:
+  - clang-4.0 
+  - lldb-4.0 
+  - llvm-4.0
+- name: Install
+  shell: for x in `dpkg -L clang-4.0 libclang-common-4.0-dev libclang1-4.0:amd64 liblldb-4.0 liblldb-4.0-dev libllvm4.0:amd64 lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-runtime python-lldb-4.0| grep ^/usr/bin/ | sed 's,^/usr/bin/,,;s,-4.0$,,'`; do update-alternatives --install /usr/bin/$x $x /usr/bin/$x-4.0 1; done # "ugly horrible hack"

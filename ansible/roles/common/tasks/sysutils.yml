@@ -1,0 +1,29 @@
+- name: Install sysutils
+  apt: pkg={{item}} state=present update-cache=yes force=yes install_recommends=no
+  with_items:
+    - megacli 
+    - bridge-utils 
+    - sysstat 
+    - partimage 
+    - debirf 
+    - apt-file 
+    - dump 
+    - lxc 
+    - cgroup-bin 
+    - dkms 
+    - hugepages 
+    - cryptsetup 
+    - cpu-checker
+    - linux-tools-common 
+    - hwloc 
+    - htop 
+    - build-essential 
+    - build-essential 
+    - nmap 
+    - xfsprogs 
+    - xfsdump 
+    - attr 
+    - quota 
+    - udftools 
+    - ipmitool 
+    - numactl 

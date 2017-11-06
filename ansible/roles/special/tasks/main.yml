@@ -1,0 +1,8 @@
+---
+- name: Special
+  hosts: testhosts
+  user: samyakp
+  become: yes
+  become_method: sudo
+  tasks:
+    - include_tasks: cuda.yml

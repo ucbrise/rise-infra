@@ -1,0 +1,10 @@
+- name: Ray
+    apt: pkg={{item}} state=present update-cache=yes force=yes
+    with_items:
+      - libboost-all-dev 
+      - python-dev 
+      - python3-dev
+      - python-numpy 
+      - python3-numpy
+      - python-funcsigs 
+      - python3-funcsigs

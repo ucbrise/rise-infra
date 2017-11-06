@@ -1,0 +1,22 @@
+- name: create key directory
+  file:
+    path: /usr/.ssh/
+    state: directory
+    mode: 0700 
+    recurse: yes
+- name: Create authorized_keys
+  file: 
+    path: /usr/.ssh/authorized_keys
+    state: touch
+    mode: 0600
+- lineinfile:
+    path: /usr/.ssh/authorized_keys
+    line: "{{item}}"
+  with_items:
+    - "{{key1}}"
+    - "{{key2}}"
+    - "{{key3}}"
+    - "{{key4}}"
+    - "{{key5}}"
+    - "{{key6}}"
+    - "{{key7}}"

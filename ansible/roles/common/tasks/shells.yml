@@ -1,0 +1,7 @@
+- name: Install shells
+   apt: pkg={{item}} state=present update-cache=yes force=yes
+   with_items:
+    - fish
+    - csh
+    - tcsh
+    - zsh

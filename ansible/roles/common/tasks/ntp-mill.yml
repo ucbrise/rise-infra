@@ -1,0 +1,13 @@
+- name: install ntp
+  apt: pkg={{item}} state=present update-cache=yes force=yes 
+  with_items:
+    - ntp
+    - ntpdate
+    
+- name: Specify NTP server
+  shell: sed -i '/^# Specify one or more NTP servers./,/^pool ntp.ubuntu.com/{//!d};s,pool ntp.ubuntu.com,server 169.229.48.63\nserver ntp1.net.berkeley.edu\nserver ntp2.net.berkeley.edu,' /etc/ntp.conf
+
+- name: Restart server
+  service: 
+    name: ntp 
+    state: restarted

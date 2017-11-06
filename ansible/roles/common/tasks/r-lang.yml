@@ -1,0 +1,11 @@
+- name: Add r-lang repo
+  shell: echo "deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial/" > /etc/apt/sources.list.d/r-lang.list
+
+- name: Adding r-lang key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: E084DAB9
+    state: present
+
+- name: Installing all approved r packages
+  shell: apt-cache search r- | grep ^r- | grep -v dbg | awk '{print $1}' | grep -v jags | grep -v cummerbund | grep -v r-other-bio3d | xargs apt-get install -y
