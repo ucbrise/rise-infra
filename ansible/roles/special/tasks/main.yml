@@ -1,8 +1,10 @@
 ---
 - name: Special
   hosts: testhosts
-  user: samyakp
+  user: rise
   become: yes
   become_method: sudo
   tasks:
     - include_tasks: cuda.yml
+    - include_tasks: edge-kernel.yml
+    - include_tasks: ethdev.yml

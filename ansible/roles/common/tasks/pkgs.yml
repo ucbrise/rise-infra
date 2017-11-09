@@ -20,6 +20,7 @@
     - unzip 
     - valgrind 
     - mbw
+
 - name: Generally Useful Libs
   apt: pkg={{item}} state=present update_cache=yes
   with_items:
@@ -31,6 +32,7 @@
     - libiomp-doc # Intel openMP libs
     - ffmpeg 
     - libfftw3-dev # useful imaging utlities
+    
 - name: Generally useful for SW dev
   apt: pkg={{item}} state=present update_cache=yes
   with_items:

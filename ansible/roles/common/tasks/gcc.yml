@@ -1,9 +1,10 @@
-- name: Get G++ repos
+- name: Add G++ repos
   apt_repository:
     repo: 'ppa:ubuntu-toolchain-r/test'
     state: present
     update_cache: yes
-- name: G++ compilers
+    
+- name: Install G++ compilers
   apt: pkg={{item}} state=present update_cache=yes
   with_items:
     - g++ 

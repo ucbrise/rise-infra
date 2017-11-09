@@ -1,5 +1,6 @@
 - name: Add vbox repo
-  shell: echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" > /etc/apt/sources.list.d/virtualbox.list
+  apt_repository:
+    repo: deb http://download.virtualbox.org/virtualbox/debian xenial contrib
 
 - name: Add vbox 2016 key
   apt_key:

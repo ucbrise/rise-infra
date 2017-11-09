@@ -1,5 +1,6 @@
 - name: Add r-lang repo
-  shell: echo "deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial/" > /etc/apt/sources.list.d/r-lang.list
+  apt_repository:
+    repo: deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial/
 
 - name: Adding r-lang key
   apt_key:

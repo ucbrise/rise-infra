@@ -22,10 +22,10 @@
     path: /var/lib/apt/lists/partial
     state: directory
 
-- name: File update
+- name: Update apt-file
   shell: apt-file update
 
-- name: upgrade packages
+- name: Upgrade packages
   apt:
     update_cache: yes
     upgrade: yes

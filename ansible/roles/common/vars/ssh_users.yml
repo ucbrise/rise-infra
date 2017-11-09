@@ -1,0 +1,20 @@
+---
+ssh_users:
+  - name: jon
+    key: "{{ lookup('file', '../files/public_keys/jonharibo.pub') }}"
+  - name: jon
+    key: "{{ lookup('file', '../files/public_keys/jongir.pub') }}"
+  - name: jon
+    key: "{{ lookup('file', '../files/public_keys/jonsaudade.pub') }}"
+  - name: jon
+    key: "{{ lookup('file', '../files/public_keys/jonchompy.pub') }}"
+  - name: kilov
+    key: "{{ lookup('file', '../files/public_keys/kilov37.pub') }}"
+  - name: kilov
+    key: "{{ lookup('file', '../files/public_keys/kilov35.pub') }}"
+  - name: sknapp
+    key: "{{ lookup('file', '../files/public_keys/sknappocelot.pub') }}"
+
+
+
+

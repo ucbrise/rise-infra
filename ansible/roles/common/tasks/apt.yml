@@ -1,22 +1,29 @@
 - name: Add MegaCLI repo
-  shell: echo "deb http://hwraid.le-vert.net/ubuntu xenial main" > /etc/apt/sources.list.d/hwraid.list
-- name: Adding MegaCLI apt key
+  apt_repository:
+    repo: deb http://hwraid.le-vert.net/ubuntu xenial main
+
+- name: Add MegaCLI apt key
   apt_key:
     keyserver: keyserver.ubuntu.com
     id: 6005210E23B3D3B4
     state: present
+
 - name: Add SBT repo
-  shell: echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list
-- name: Adding SBT apt key
+  apt_repository:
+    repo: deb https://dl.bintray.com/sbt/debian /
+
+- name: Add SBT apt key
   apt_key: 
     keyserver: keyserver.ubuntu.com 
     id: 642AC823
     state: present
-- name: fish
+
+- name: ADD fish repo
   apt_repository: 
     repo: ppa:fish-shell/release-2
     state: present
     update_cache: yes
+    
 - name: Install Packages
   apt: pkg={{item}} state=present update_cache=yes #cache_valid_time=604800
   with_items:

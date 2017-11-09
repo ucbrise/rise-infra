@@ -1,7 +1,7 @@
 ---
 - name: Common
   hosts: testhosts
-  user: samyakp
+  user: rise
   become: yes
   become_method: sudo
   vars: 
@@ -32,16 +32,3 @@
     - include_tasks: nfshome.yml
     - include_tasks: shells.yml
     - include_tasks: cleanup.yml
-
-
-
-
-
-
-
-
-
-
-
-
-  

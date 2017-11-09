@@ -1,11 +1,20 @@
-- name: install ntp
+- name: Install ntp
   apt: pkg={{item}} state=present update-cache=yes force=yes 
   with_items:
     - ntp
     - ntpdate
     
+- name: Pool NTP server
+  replace:
+    path: /etc/ntp.conf
+    regexp: ^# Specify one or more NTP servers.
+    replace: "^pool ntp.ubuntu.com/{//!d}"
+
 - name: Specify NTP server
-  shell: sed -i '/^# Specify one or more NTP servers./,/^pool ntp.ubuntu.com/{//!d};s,pool ntp.ubuntu.com,server 169.229.48.63\nserver ntp1.net.berkeley.edu\nserver ntp2.net.berkeley.edu,' /etc/ntp.conf
+  replace:
+    path: /etc/ntp.conf
+    regexp: pool ntp.ubuntu.com
+    replace: server 169.229.48.63\nserver ntp1.net.berkeley.edu\nserver ntp2.net.berkeley.edu
 
 - name: Restart server
   service: 

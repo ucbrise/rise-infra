@@ -2,31 +2,19 @@
   lineinfile:
     dest: /etc/passwd
     line: '+@rise-l::::::'
-
-- name: Create sudoers
-  file: 
-    path: /etc/sudoers.d/root
-    state: touch
-    mode: 0440
-
-- name: Append to sudoers
-  lineinfile:
-    dest: /etc/sudoers.d/root
-    line: '+amp-l     ALL=(ALL)       ALL'
+    
+- name: Clear defaultdomain
+    copy:
+      content: ""
+      dest: /etc/defaultdomain
+      force: yes
 
 - name: Replace with mill
-  shell: echo "mill" > /etc/defaultdomain
-
-
-- name: Append to nsswitch
   lineinfile:
-    dest: /etc/nsswitch.conf
-    line: "automount:      files nis"
+    path: /etc/defaultdomain
+    line: "mill"
 
-- name: nsswitch group
-  shell: "sed -i 's,^group:.*,group:              files nis,;s,^shadow:.*,shadow:         compat,' /etc/nsswitch.conf"
-
-- name: install nis 
+- name: Install nis and autofs
   apt: pkg={{item}} state=present update-cache=yes force=yes 
   with_items:
     - nis

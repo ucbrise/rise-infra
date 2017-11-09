@@ -1,16 +1,9 @@
 
-- name: Install cuda and lightdm
-  apt: pkg={{item}} state=present update-cache=yes force=yes
-  with_items:
-    - cuda
-    - lightdm
-
 - name: Check if cuda 8 is installed
-  command: dpkg-query -W cuda8       
+  command: dpkg-query -W cuda-8.0       
   register: "cuda8_check_deb"
   failed_when: "cuda8_check_deb.rc > 1"
   changed_when: "cuda8_check_deb.rc == 1"
-
 
 - name: Download cuda 8
   get_url: 
@@ -22,22 +15,32 @@
   apt: deb="/tmp/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb"
   when: cuda8_check_deb.rc == 1
 
-   
-    # - name: Download cuda 9
-    #   get_url: 
-    #    url="{{http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb }}"
-    #    dest="/tmp"
-    #   when: cuda9_check_deb.rc == 1
 
-    
-  #   - name: Install cuda9
-  # apt: deb="/home/{{ ansible_env.USER }}/Downloads/{{ my_package_name }}.deb"
-  # sudo: true
-  # when: vagrant_check_deb.rc == 1
+- name: Check if cuda 9 is installed
+  command: dpkg-query -W cuda-9.0       
+  register: "cuda9_check_deb"
+  failed_when: "cuda9_check_deb.rc > 1"
+  changed_when: "cuda9_check_deb.rc == 1"
+
+- name: Download cuda 9
+  get_url: 
+   url: "http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.0.176-1_amd64.deb "
+   dest: "/tmp"
+  when: cuda9_check_deb.rc == 1
 
 
-      # - name: Get cuda9 key
-      #   apt_key:
-      #     keyserver: keyserver.ubuntu.com
-      #     id: 6005210E23B3D3B4
-      #     state: present
+- name: Install cuda9
+  apt: deb="/tmp/cuda-repo-ubuntu1604_9.0.176-1_amd64.deb"
+  when: cuda9_check_deb.rc == 1
+
+- name: Get cuda9 key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 6005210E23B3D3B4
+    state: present
+
+- name: Install cuda and lightdm
+  apt: pkg={{item}} state=present update-cache=yes force=yes
+  with_items:
+    - cuda
+    - lightdm

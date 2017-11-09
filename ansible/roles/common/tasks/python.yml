@@ -6,7 +6,7 @@
     - python-stdeb
     - python-nose
 
-- name: Python Analysis
+- name: Python analysis
   apt: pkg={{item}} state=present update-cache=yes force=yes
   with_items:
     - python-numpy 

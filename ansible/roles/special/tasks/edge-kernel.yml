@@ -1,0 +1,32 @@
+
+ - name: Install the latest packaged "Edge" kernels for Ubuntu 16.04 LTS
+   apt: pkg={{item}} state=present update-cache=yes force=yes
+   with_items:
+      - linux-generic-hwe-16.04-edge 
+      - linux-headers-generic-hwe-16.04-edge 
+      - linux-cloud-tools-generic-hwe-16.04-edge 
+      - linux-tools-generic-hwe-16.04-edge 
+      - linux-cloud-tools-generic-hwe-16.04-edge 
+      - linux-tools-generic-hwe-16.04-edge
+
+ - name: reboot nodes
+   shell: sleep 2 && shutdown -r now "Ansible reboot"
+   async: 1
+   poll: 0
+   ignore_errors: true
+
+ - name: wait for server to come back
+   local_action: wait_for
+   args:
+     host: "{{ inventory_hostname }}"
+     port: 22
+     state: started
+     delay: 30
+     timeout: 300
+
+- name: Remove dependencies that are no longer required
+  apt: pkg={{item}} state=absent purge=yes force=yes
+  with_items:
+    - linux-generic-hwe-16.04 
+    - linux-headers-generic-hwe-16.04 
+    - linux-image-generic-hwe-16.04

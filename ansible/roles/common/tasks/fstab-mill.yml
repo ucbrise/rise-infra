@@ -1,9 +1,14 @@
 - name: Append to fstab 
-  lineinfile:
-    dest: /etc/fstab
-    line: thumper:/export/work /work nfs vers=3 0 0
-      
-- name: create work directory
+  mount:
+    name: /work
+    src: "thumper:/export/work"
+    path: /etc/fstab
+    fstype: nfs
+    state: present   
+    
+    #thumper:/export/work /work nfs vers=3   0 0
+
+- name: Create work directory
   file:
     path: '/work'
     state: directory
