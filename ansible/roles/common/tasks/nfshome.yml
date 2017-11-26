@@ -1,5 +1,15 @@
 - name: Install nfs and autofs
-  apt: pkg={{item}} state=present update-cache=yes force=yes
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
   with_items:
     - nfs-common
     - autofs
+
+- name: add automount database sources to nsswitch.conf
+  lineinfile:
+    path: /etc/nsswitch.conf
+    state: present
+    line: "automount:	files nis"
