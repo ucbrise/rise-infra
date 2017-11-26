@@ -1,15 +1,42 @@
 - name: Add Java 8 repository
-  apt_repository: 
-    repo: 'ppa:webupd8team/java'
+  apt_repository:
+    repo: "ppa:webupd8team/java"
 
 - name: Agree to oracle license
-  debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+  debconf:
+    name: oracle-java8-installer
+    question: shared/accepted-oracle-license-v1-1
+    vtype: select
+    value: true
 
-- name: Install Java versions
-  apt: pkg={{item}} state=present update-cache=yes force=yes
+- name: Install Java v8/9 with unlimited Java Crypto Extension, v8 default
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
   with_items:
-    - oracle-java8-installer 
+    - oracle-java8-installer
     - oracle-java8-unlimited-jce-policy
-    - oracle-java9-installer 
-    - oracle-java9-unlimited-jce-policy 
+    - oracle-java9-installer
+    - oracle-java9-unlimited-jce-policy
     - oracle-java8-set-default
+
+- name: SBT repo
+  apt_repository:
+    repo: "deb https://dl.bintray.com/sbt/debian /"
+
+- name: SBT apt key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 642AC823
+    state: present
+
+- name: SBT install
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+    #cache_valid_time: 604800
+  with_items:
+    - sbt
