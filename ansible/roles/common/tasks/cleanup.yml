@@ -1,31 +1,21 @@
-- name: Update all packages to the latest version
+- name: apt-get dist-upgrade 
   apt:
     upgrade: dist
 
-- name: Remove dependencies that are no longer required
+- name: purge unneeded dependencies
   apt:
     purge: yes
     autoremove: yes
-    
-- name: Remove useless packages from the cache
+
+- name: clean up unneeded cached packages
   apt:
     autoclean: yes
 
-- name: Delete bin files
-  shell: rm -f /var/cache/apt/*.bin
+- name: clean up apt cruft - no module for this
+  command: apt-get clean
 
-- name: Delete everything in lists
-  shell: rm -rf /var/lib/apt/lists/*
+- name: reset apt to a useful state - no module for this
+  command: apt-get update
 
-- name: Create partial dir in lists
-  file:
-    path: /var/lib/apt/lists/partial
-    state: directory
-
-- name: Update apt-file
-  shell: apt-file update
-
-- name: Upgrade packages
-  apt:
-    update_cache: yes
-    upgrade: yes
+- name: Update apt-file - no module for this
+  command: apt-file update
