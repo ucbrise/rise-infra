@@ -1,42 +1,51 @@
 - name: Generally Useful stuff
-  apt: pkg={{item}} state=present update_cache=yes
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
   with_items:
-    - git 
-    - git-doc 
-    - git-man 
-    - gnuplot 
-    - mosh 
-    - subversion 
-    - gdb 
-    - ruby 
-    - emacs 
-    - cmake 
+    - git
+    - git-doc
+    - git-man
+    - gnuplot
+    - mosh
+    - subversion
+    - gdb
+    - ruby
+    - emacs
+    - cmake
     - aws-status
-    - curl 
-    - lzop 
-    - pbzip2 
-    - pigz 
-    - pssh 
-    - unzip 
-    - valgrind 
+    - curl
+    - lzop
+    - pbzip2
+    - pigz
+    - pssh
+    - unzip
+    - valgrind
     - mbw
 
 - name: Generally Useful Libs
-  apt: pkg={{item}} state=present update_cache=yes
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
   with_items:
-    - libncursesw5-dev 
-    - libncurses5-dev 
+    - libncursesw5-dev
+    - libncurses5-dev
     - libssl-dev
-    - libiomp5 
-    - libiomp-dev 
+    - libiomp5
+    - libiomp-dev
     - libiomp-doc # Intel openMP libs
-    - ffmpeg 
+    - ffmpeg
     - libfftw3-dev # useful imaging utlities
-    
-- name: Generally useful for SW dev
-  apt: pkg={{item}} state=present update_cache=yes
+
+- name: Generally Useful SW Dev packages
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
   with_items:
-    - build-essential 
-    - gettext 
-    - autoconf 
-    - pkg-config 
+    - build-essential
+    - gettext
+    - autoconf
+    - pkg-config
