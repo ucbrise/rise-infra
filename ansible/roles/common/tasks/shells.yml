@@ -1,6 +1,14 @@
-- name: Install shells
-   apt: pkg={{item}} state=present update-cache=yes force=yes
-   with_items:
+- name: fish repo
+  apt_repository:
+    repo: 'ppa:fish-shell/release-2'
+
+- name: install all the shells
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
+  with_items:
     - fish
     - csh
     - tcsh
