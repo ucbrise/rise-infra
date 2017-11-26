@@ -1,12 +1,15 @@
-- name: Add bazel repo
-  shell: echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" > /etc/apt/sources.list.d/bazel.list
+- name: bazel repo
+  apt_repository:
+    repo: 'deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8'
+    state: present
+    filename: bazel
 
-- name: Add bazel key
+- name: bazel repo signing key
   apt_key:
-    url: https://bazel.build/bazel-release.pub.gpg
+    url: "https://bazel.build/bazel-release.pub.gpg"
     state: present
 
-- name: Install bazel
-  apt: pkg={{item}} state=present update-cache=yes force=yes 
-  with_items:
-    - bazel
+- name: bazel install
+  apt:
+    name: bazel
+    state: present
