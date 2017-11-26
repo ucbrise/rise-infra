@@ -1,21 +1,39 @@
-- name: Append to passwd
-  lineinfile:
-    dest: /etc/passwd
-    line: '+@rise-l::::::'
-    
-- name: Clear defaultdomain
-    copy:
-      content: ""
-      dest: /etc/defaultdomain
-      force: yes
+- name: set "mill" NIS domainname
+  copy:
+    src: defaultdomain-mill
+    dest: /etc/defaultdomain
 
-- name: Replace with mill
-  lineinfile:
-    path: /etc/defaultdomain
-    line: "mill"
-
-- name: Install nis and autofs
-  apt: pkg={{item}} state=present update-cache=yes force=yes 
+- name: nis package
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
   with_items:
     - nis
-    - autofs
+
+- name: use compat mode for group in /etc/nsswitch.conf
+  lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: '^group:'
+    line: 'group:		compat'
+
+- name: add rise-l netgroup to /etc/passwd
+  lineinfile:
+    path: /etc/passwd
+    line: '+:::'
+
+- name: add rise-l netgroup to /etc/passwd
+  lineinfile:
+    path: /etc/passwd
+    line: '+@rise-l::::::'
+
+- name: sudo root access for staff
+  lineinfile:
+    path: /etc/sudoers.d/root
+    line: "{{ item }} ALL=(ALL) ALL"
+    validate: "visudo -cf %s"
+  with_items:
+    - jkuroda
+    - sknapp
+    - samyak
