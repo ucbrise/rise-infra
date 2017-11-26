@@ -1,9 +1,14 @@
-- name: Clang 
-  apt: pkg={{item}} state=present update_cache=yes
+- name: clang and llvm
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
   with_items:
-  - clang-4.0 
-  - lldb-4.0 
+  - clang-4.0
+  - lldb-4.0
   - llvm-4.0
 
-- name: Install llvm
+# this should be done via the alternatives module using this horrible command to populate an items list
+#
+- name: llvm/etc update-alternatives - ugly horrible hack
   shell: for x in `dpkg -L clang-4.0 libclang-common-4.0-dev libclang1-4.0:amd64 liblldb-4.0 liblldb-4.0-dev libllvm4.0:amd64 lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-runtime python-lldb-4.0| grep ^/usr/bin/ | sed 's,^/usr/bin/,,;s,-4.0$,,'`; do update-alternatives --install /usr/bin/$x $x /usr/bin/$x-4.0 1; done # "ugly horrible hack"
