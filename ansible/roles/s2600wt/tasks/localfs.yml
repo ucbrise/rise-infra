@@ -7,3 +7,9 @@
     path: /etc/fstab
     state: present
     line: 'LABEL=data	/data		auto	default 0	1'
+
+- name: Create /data directory
+  file:
+    path: "/data"
+    state: directory
+    mode: 0700
