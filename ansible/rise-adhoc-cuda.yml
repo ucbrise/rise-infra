@@ -1,0 +1,8 @@
+---
+- name: rise s2600wt adhoc system with cuda
+  hosts: rise-adhoc-cuda
+  become: yes
+  roles:
+    - s2600wt
+    - common
+    - cuda
