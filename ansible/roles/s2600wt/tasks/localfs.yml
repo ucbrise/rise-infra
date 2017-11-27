@@ -1,0 +1,9 @@
+# handle manually until we can wrangle megacli and megaraid inconsistent PCIe addresses
+#- name: apply ext[234] label to /dev/md0
+#command: e2label /dev/md0 root
+
+- name: use labels for /data
+  lineinfile:
+    path: /etc/fstab
+    state: present
+    line: 'LABEL=data	/data		auto	default 0	1'
