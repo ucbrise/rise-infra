@@ -10,16 +10,28 @@
       - "ACTION=='add', SUBSYSTEM=='net', DRIVERS=='i40e', KERNELS=='0000:82:00.2', NAME='i10e2'"
       - "ACTION=='add', SUBSYSTEM=='net', DRIVERS=='i40e', KERNELS=='0000:82:00.3', NAME='i10e3'"
 
-- name: Network interface
-  lineinfile:
-    path: /etc/network/interfaces
-    line: "{{item}}"
-    with_items:
-      - "auto lo"
-      - "iface lo inet loopback"
-      - "auto ixgbem0"
-      - "iface ixgbem0 inet dhcp"
-      - "auto enp129s0f0"
-      - "iface enp129s0f0 inet dhcp"
-      - "auto eth0"
-      - "iface eth0 inet dhcp"
+- name: Set Network interface configurations
+  interfaces_file: 
+    dest: /etc/network/interfaces
+    iface: lo
+    option: inet
+    value: loopback
+    state: present
+- interfaces_file: 
+    dest: /etc/network/interfaces
+    iface: ixgbem0
+    option: inet
+    value: dhcp
+    state: present
+- interfaces_file: 
+    dest: /etc/network/interfaces
+    iface: enp129s0f0
+    option: inet
+    value: dhcp
+    state: present
+- interfaces_file: 
+    dest: /etc/network/interfaces
+    iface: eth0
+    option: inet
+    value: dhcp
+    state: present
