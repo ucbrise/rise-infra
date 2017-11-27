@@ -27,13 +27,12 @@
 #    delay: 300
 #    timeout: 600
 
-- name: Minimize dependencies on old non-edge kernels 
+- name: Minimize dependencies on old non-edge kernels
   apt:
     pkg: "{{ item }}"
     state: absent
     purge: yes
     force: yes
-    ignore_errors: true
   with_items:
     - linux-generic-hwe-16.04
     - linux-headers-generic-hwe-16.04
