@@ -1,0 +1,2 @@
+- include_tasks: cuda.yml
+- include_tasks: cudnn.yml
