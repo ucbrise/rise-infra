@@ -9,7 +9,7 @@
     url: "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
     state: present
 
-- name: oracle virtualbox repo key - deprecated 
+- name: oracle virtualbox repo key - deprecated
   apt_key:
     url: "https://www.virtualbox.org/download/oracle_vbox.asc"
     state: present

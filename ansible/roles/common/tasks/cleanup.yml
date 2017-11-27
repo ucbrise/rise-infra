@@ -1,4 +1,4 @@
-- name: apt-get dist-upgrade 
+- name: apt-get dist-upgrade
   apt:
     upgrade: dist
 
