@@ -1,0 +1,4 @@
+- include_tasks: ethdev-watson.yml
+- include_tasks: edge-kernel.yml
+- include_tasks: rootfs.yml
+- include_tasks: localfs.yml
