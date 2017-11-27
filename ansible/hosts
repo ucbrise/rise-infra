@@ -1,5 +1,3 @@
 [testhosts]
-#10.105.134.140
-#10.0.0.232
-128.32.39.197
-#r11.millennium.berkeley.edu
+[rise-adhoc-cuda]
+c69.millennium.berkeley.edu
