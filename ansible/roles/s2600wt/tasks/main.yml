@@ -1,10 +1,2 @@
----
-- name: Special
-  hosts: testhosts
-  user: rise
-  become: yes
-  become_method: sudo
-  tasks:
-    - include_tasks: cuda.yml
-    - include_tasks: edge-kernel.yml
-    - include_tasks: ethdev.yml
+- include_tasks: ethdev-s2600wt.yml
+- include_tasks: edge-kernel.yml
