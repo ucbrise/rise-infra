@@ -32,6 +32,8 @@
   lineinfile:
     path: /etc/sudoers.d/root
     line: "{{ item }} ALL=(ALL) ALL"
+    create: yes
+    mode: 0400
     validate: "visudo -cf %s"
   with_items:
     - jkuroda
