@@ -1,0 +1,5 @@
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="ixgbe", KERNELS=="0000:01:00.0", NAME="ixgbem0"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="ixgbe", KERNELS=="0000:01:00.1", NAME="ixgbem1"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="mlx5_core", KERNELS=="0000:45:00.0", NAME="mlx5e0"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="i40e", KERNELS=="0000:83:00.0", NAME="i10e0"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="i40e", KERNELS=="0000:83:00.1", NAME="i10e1"
