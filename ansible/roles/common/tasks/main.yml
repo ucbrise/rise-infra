@@ -5,7 +5,7 @@
 - include_tasks: python.yml
 - include_tasks: r-lang.yml
 - include_tasks: ray.yml
-- include_tasks: bazel.yml
+#- include_tasks: bazel.yml
 - include_tasks: locales.yml
 - include_tasks: sysutils.yml
 - include_tasks: vbox.yml
