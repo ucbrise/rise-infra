@@ -2,13 +2,19 @@
   apt_repository:
     repo: "ppa:webupd8team/java"
 
-- name: Agree to oracle license
-  debconf:
-    name: oracle-java8-installer
-    question: shared/accepted-oracle-license-v1-1
-    vtype: select
-    value: true
+# OMFG - this module sets this value to be "True", not "true"
+# OMFG - this is so broken
+#
+#- name: Agree to oracle license for java8
+#  debconf:
+#    name: oracle-java8-installer
+#    question: shared/accepted-oracle-license-v1-1
+#    value: true
+#    vtype: select
 
+- name: Agree to oracle license for java8 also handles java9
+  shell: "echo oracle-java9-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections"
+  
 - name: Install Java v8/9 with unlimited Java Crypto Extension, v8 default
   apt:
     pkg: "{{ item }}"
