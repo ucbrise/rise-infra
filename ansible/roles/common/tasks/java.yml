@@ -12,9 +12,9 @@
 #    value: true
 #    vtype: select
 
-- name: Agree to oracle license for java8 also handles java9
+- name: Agree to oracle license for java9 also handles java8
   shell: "echo oracle-java9-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections"
-  
+
 - name: Install Java v8/9 with unlimited Java Crypto Extension, v8 default
   apt:
     pkg: "{{ item }}"
