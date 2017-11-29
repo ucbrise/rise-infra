@@ -34,6 +34,6 @@
     purge: yes
     force: yes
   with_items:
-    - linux-generic-hwe-16.04
-    - linux-headers-generic-hwe-16.04
-    - linux-image-generic-hwe-16.04
+    - linux-generic
+    - linux-headers-generic
+    - linux-image-generic
