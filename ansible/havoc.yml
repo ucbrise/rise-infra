@@ -1,0 +1,7 @@
+---
+- name: havoc - a mostly single-system class
+  hosts: havoc
+  become: yes
+  roles:
+    - havoc
+    - common
