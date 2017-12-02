@@ -21,11 +21,6 @@
 - name: add rise-l netgroup to /etc/passwd
   lineinfile:
     path: /etc/passwd
-    line: '+:::'
-
-- name: add rise-l netgroup to /etc/passwd
-  lineinfile:
-    path: /etc/passwd
     line: '+@rise-l::::::'
 
 - name: sudo root access for staff
