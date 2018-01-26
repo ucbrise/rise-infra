@@ -1,0 +1,9 @@
+- name: udev rules for s2600wt ethernet device naming
+  copy:
+    src: 70-persistent-net.rules-s2600wt
+    dest: /etc/udev/rules.d/70-persistent-net.rules
+
+- name: s2600wt network interface config
+  copy:
+    dest: /etc/network/interfaces
+    src: interfaces-s2600wt

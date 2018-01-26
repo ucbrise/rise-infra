@@ -1,0 +1,10 @@
+- name: Install cudnn6 for cuda-8, cudnn7 for cuda-9
+  apt:
+    deb: "{{ item }}"
+  with_items:
+  - https://research.eecs.berkeley.edu/pkgs/cudnn/libcudnn6_6.0.21-1+cuda8.0_amd64.deb
+  - https://research.eecs.berkeley.edu/pkgs/cudnn/libcudnn6-dev_6.0.21-1+cuda8.0_amd64.deb
+  - https://research.eecs.berkeley.edu/pkgs/cudnn/libcudnn6-doc_6.0.21-1+cuda8.0_amd64.deb
+  - https://research.eecs.berkeley.edu/pkgs/cudnn/libcudnn7_7.0.4.31-1+cuda9.0_amd64.deb
+  - https://research.eecs.berkeley.edu/pkgs/cudnn/libcudnn7-dev_7.0.4.31-1+cuda9.0_amd64.deb
+  - https://research.eecs.berkeley.edu/pkgs/cudnn/libcudnn7-doc_7.0.4.31-1+cuda9.0_amd64.deb

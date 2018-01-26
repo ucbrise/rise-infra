@@ -1,0 +1,13 @@
+- name: add /work from thumper to fstab
+  mount:
+    name: /work
+    src: "thumper:/export/work"
+    path: /etc/fstab
+    fstype: nfs
+    state: present
+
+- name: Create work directory
+  file:
+    path: "/work"
+    state: directory
+    mode: 0700

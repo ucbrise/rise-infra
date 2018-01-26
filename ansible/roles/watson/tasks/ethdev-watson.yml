@@ -1,0 +1,9 @@
+- name: udev rules for watson ethernet device naming
+  copy:
+    src: 70-persistent-net.rules-watson
+    dest: /etc/udev/rules.d/70-persistent-net.rules
+
+- name: watson network interface config
+  copy:
+    dest: /etc/network/interfaces
+    src: interfaces-watson

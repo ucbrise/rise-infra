@@ -1,0 +1,15 @@
+- name: bazel repo
+  apt_repository:
+    repo: 'deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8'
+    state: present
+    filename: bazel
+
+- name: bazel repo signing key
+  apt_key:
+    url: "https://bazel.build/bazel-release.pub.gpg"
+    state: present
+
+- name: bazel install
+  apt:
+    name: bazel
+    state: present

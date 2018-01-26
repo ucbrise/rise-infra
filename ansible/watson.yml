@@ -1,0 +1,7 @@
+---
+- name: watson - a mostly single-system class
+  hosts: watson
+  become: yes
+  roles:
+    - watson
+    - common

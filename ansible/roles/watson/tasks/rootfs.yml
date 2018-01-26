@@ -1,0 +1,9 @@
+- name: apply ext[234] label to /dev/md0
+  command: e2label /dev/md0 root
+
+- name: de-uuidify /etc/fstab - use labels for rootfs
+  lineinfile:
+    path: /etc/fstab
+    backrefs: yes
+    regexp: '^(UUID=.*\s+/\s+)(.*)'
+    line: 'LABEL=root	/		\2'

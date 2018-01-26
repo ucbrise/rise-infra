@@ -1,0 +1,18 @@
+- name: Add r-lang repo
+  apt_repository:
+    repo: deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial/
+
+- name: Adding r-lang key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: E084DAB9
+    state: present
+
+- name: r-recommended core
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
+  with_items:
+    - r-recommended

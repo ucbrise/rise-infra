@@ -1,0 +1,21 @@
+- name: apt-get dist-upgrade
+  apt:
+    upgrade: dist
+
+- name: purge unneeded dependencies
+  apt:
+    purge: yes
+    autoremove: yes
+
+- name: clean up unneeded cached packages
+  apt:
+    autoclean: yes
+
+- name: clean up apt cruft - no module for this
+  command: apt-get clean
+
+- name: reset apt to a useful state - no module for this
+  command: apt-get update
+
+- name: Update apt-file - no module for this
+  command: apt-file update

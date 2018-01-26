@@ -1,0 +1,31 @@
+- name: ntp packages
+  apt:
+    pkg:  "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
+  with_items:
+    - ntp
+    - ntpdate
+
+- name: comment out ntp pool defaults
+  replace:
+    path: /etc/ntp.conf
+    regexp: '^pool(.*ubuntu.*)?$'
+    replace: '# pool\1'
+
+- name: add our chosen ntp servers
+  lineinfile:
+    path: /etc/ntp.conf
+    state: present
+    insertafter: ntp.ubuntu.com
+    line: "pool {{ item }}"
+  with_items:
+      - 'ntp2.net.berkeley.edu'
+      - 'ntp1.net.berkeley.edu'
+      - '169.229.48.63'
+
+- name: Restart server
+  service:
+    name: ntp
+    state: restarted

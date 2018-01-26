@@ -1,0 +1,36 @@
+- name: set "mill" NIS domainname
+  copy:
+    src: defaultdomain-mill
+    dest: /etc/defaultdomain
+
+- name: nis package
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
+  with_items:
+    - nis
+
+- name: use compat mode for group in /etc/nsswitch.conf
+  lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: '^group:'
+    line: 'group:		compat'
+
+- name: add rise-l netgroup to /etc/passwd
+  lineinfile:
+    path: /etc/passwd
+    line: '+@rise-l::::::'
+
+- name: sudo root access for staff
+  lineinfile:
+    path: /etc/sudoers.d/root
+    line: "{{ item }} ALL=(ALL) ALL"
+    create: yes
+    mode: 0400
+    validate: "visudo -cf %s"
+  with_items:
+    - jkuroda
+    - sknapp
+    - samyak

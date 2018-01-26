@@ -1,0 +1,13 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+#
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+# used to be eno1, renamed via udev to be more descriptive
+#
+auto ixgbem0
+iface ixgbem0 inet dhcp

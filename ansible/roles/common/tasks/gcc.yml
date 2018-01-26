@@ -1,0 +1,24 @@
+- name: Ubuntu Toolchain PPA for newer gcc/g++/etc
+  apt_repository:
+    repo: 'ppa:ubuntu-toolchain-r/test'
+    state: present
+    update_cache: yes
+
+- name: gcc/g++ compilers through version 7
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - gcc
+    - g++
+    - cpp-doc
+    - gcc-5
+    - g++-5
+    - cpp-5-doc
+    - gcc-6
+    - g++-6
+    - cpp-6-doc
+    - gcc-7
+    - g++-7
+    - cpp-7-doc

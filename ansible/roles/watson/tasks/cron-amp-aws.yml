@@ -1,0 +1,52 @@
+- name: add amp user to /etc/passwd via NIS
+  lineinfile:
+    path: /etc/passwd
+    state: present
+    line: '+amp::::::'
+
+- name: set SHELL env variable for RISE AWS Audit cronjob
+  cron:
+    user: amp
+    env: yes
+    name: SHELL
+    value: /bin/bash
+
+- name: set PATH env variable for RISE AWS Audit cronjob
+  cron:
+    user: amp
+    env: yes
+    name: PATH
+    value: /project/cs/amp/aws/anaconda3/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
+    insertafter: SHELL
+
+- name: set MAILTO env variable for RISE AWS Audit cronjob
+  cron:
+    user: amp
+    env: yes
+    name: MAILTO
+    value: rise-support@cs.berkeley.edu
+    insertafter: PATH
+
+- name: MWF cron job for the RISE AWS Audit Reports
+  cron:
+    name: MWF AWS Audit Reports except for last day of the month
+    state: present
+    user: amp
+    minute: 16
+    hour: 05
+    # day: * # default
+    # month: * # default
+    weekday: 1,3,5 # M,W,F
+    job: '[[ "$(date --date=tomorrow +\%d)" != "01" ]] && /project/cs/amp/aws/bin/aws-audit.py --weekly --email --ou --bucket amp_billing_bucket --id 117716615155 --full'
+
+- name: last Day Of Month cron job for the RISE AWS Audit Reports
+  cron:
+    name: AWS Audit Reports for last day of the month
+    state: present
+    user: amp
+    minute: 35
+    hour: 23
+    day: 28-31
+    # month: * # default
+    # weekday: * # default
+    job: '[[ "$(date --date=tomorrow +\%d)" == "01" ]] && /project/cs/amp/aws/bin/aws-audit.py --monthly --email --ou --bucket amp_billing_bucket --id 117716615155 --full'

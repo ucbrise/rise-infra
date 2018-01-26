@@ -1,0 +1,9 @@
+- name: udev rules for blaze ethernet device naming
+  copy:
+    src: 70-persistent-net.rules-blaze
+    dest: /etc/udev/rules.d/70-persistent-net.rules
+
+- name: blaze network interface config
+  copy:
+    dest: /etc/network/interfaces
+    src: interfaces-blaze

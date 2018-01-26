@@ -1,0 +1,17 @@
+- include_tasks: pkgs.yml
+- include_tasks: gcc.yml
+- include_tasks: llvm.yml
+- include_tasks: java.yml
+- include_tasks: python.yml
+- include_tasks: r-lang.yml
+- include_tasks: ray.yml
+#- include_tasks: bazel.yml
+- include_tasks: locales.yml
+- include_tasks: sysutils.yml
+- include_tasks: vbox.yml
+- include_tasks: auth-mill.yml
+- include_tasks: ntp-mill.yml
+- include_tasks: fstab-mill.yml
+- include_tasks: nfshome.yml
+- include_tasks: shells.yml
+- include_tasks: cleanup.yml

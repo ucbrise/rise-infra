@@ -1,0 +1,48 @@
+- name: Add Java 8 repository
+  apt_repository:
+    repo: "ppa:webupd8team/java"
+
+# OMFG - this module sets this value to be "True", not "true"
+# OMFG - this is so broken
+#
+#- name: Agree to oracle license for java8
+#  debconf:
+#    name: oracle-java8-installer
+#    question: shared/accepted-oracle-license-v1-1
+#    value: true
+#    vtype: select
+
+- name: Agree to oracle license for java9 also handles java8
+  shell: "echo oracle-java9-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections"
+
+- name: Install Java v8/9 with unlimited Java Crypto Extension, v8 default
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
+  with_items:
+    - oracle-java8-installer
+    - oracle-java8-unlimited-jce-policy
+    - oracle-java9-installer
+    - oracle-java9-unlimited-jce-policy
+    - oracle-java8-set-default
+
+- name: SBT repo
+  apt_repository:
+    repo: "deb https://dl.bintray.com/sbt/debian /"
+
+- name: SBT apt key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 642AC823
+    state: present
+
+- name: SBT install
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+    #cache_valid_time: 604800
+  with_items:
+    - sbt
