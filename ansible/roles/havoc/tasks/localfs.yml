@@ -12,4 +12,4 @@
   file:
     path: "/data"
     state: directory
-    mode: 0700
+    mode: 1777
