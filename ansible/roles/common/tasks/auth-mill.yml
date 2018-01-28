@@ -18,6 +18,11 @@
     regexp: '^group:'
     line: 'group:		compat'
 
+- name: add compat-mode to etc/group
+  lineinfile:
+    path: /etc/group
+    line: '+:::'
+
 - name: add rise-l netgroup to /etc/passwd
   lineinfile:
     path: /etc/passwd
