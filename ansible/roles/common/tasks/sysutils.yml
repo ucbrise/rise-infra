@@ -42,3 +42,4 @@
     - udftools
     - ipmitool
     - numactl
+    - tree
