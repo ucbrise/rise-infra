@@ -15,11 +15,15 @@ import collections
 import csv
 import datetime
 from email.mime.text import MIMEText
+from io import StringIO
 import locale
 import logging
 import smtplib
 import socket
 import sys
+
+# support for N-ary tree data structure to support OUs
+import tree
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -70,7 +74,7 @@ def get_latest_bill(aws_id, billing_bucket, billing_file_path, save):
 
 def parse_billing_data(billing_data):
   """
-  parse the billing data, store it in a hash and calculate total spend.
+  parse the billing data and store it in a hash
 
   args:
     - billing_data:  CSV object of billing data
@@ -92,7 +96,125 @@ def parse_billing_data(billing_data):
 
   return user_dict
 
-def generate_report(user_dict, limit, display_ids, use_ou, full):
+def get_root_ou_id(aws_id):
+  # TODO: use collections.namedtuple
+  """
+  get the ID of the ROOT OU
+
+  args:
+    - aws_id:  AWS account number
+
+  returns:
+    - ou_id:   tuple containing ID number of the ROOT OU and 'ROOT'
+  """
+  client = boto3.client('organizations')
+  ou_r = client.list_roots()
+
+  return (ou_r['Roots'][0]['Id'], 'ROOT')
+
+def get_ou_children(ou_id):
+  # TODO: use collections.namedtuple
+  """
+  get the list of OU children for a given OU id
+
+  args:
+    - ou_id:  ID number of the current OU
+
+  returns:
+    - children:  list of tuples containing children OU IDs and descriptive
+                 name, or NoneType
+  """
+  client = boto3.client('organizations')
+  ou_r = client.list_organizational_units_for_parent(ParentId=ou_id)
+
+  children = list()
+  while True:
+    for ou in ou_r['OrganizationalUnits']:
+      children.append((ou['Id'], ou['Name']))
+    if 'NextToken' in ou_r:
+      ou_r = client.list_organizational_units_for_parent(
+          ParentId=ou_id, NextToken=ou_r['NextToken'])
+    else:
+      break
+  return children or None
+
+def get_accounts_for_ou(ou_id):
+  # TODO: use collections.namedtuple
+  """
+  get the accounts attached to a given ou_id
+
+  args:
+    - ou_id:  ID number of an OU
+
+  returns:
+    - accounts: list of tuples containing AWS ID and full name
+  """
+  client = boto3.client('organizations')
+  ou_r = client.list_accounts_for_parent(ParentId=ou_id)
+  accounts = list()
+
+  while True:
+    for acct in ou_r['Accounts']:
+      accounts.append((acct['Id'], acct['Name']))
+    if 'NextToken' in ou_r:
+      ou_r = client.list_accounts_for_parent(ParentId=ou_id,
+                                             NextToken=ou_r['NextToken'])
+    else:
+      break
+  return accounts
+
+def init_tree(aws_id):
+  """
+  initializes the OU tree datastructure
+
+  args:
+    - aws_id:  the AWS ID of the root consolidated billing account
+
+  returns:
+    - root Node object
+  """
+  root_ou = get_root_ou_id(aws_id)
+  root = tree.Node(id=root_ou[0], name=root_ou[1])
+
+  return root
+
+def populate_tree(tree, user_dict):
+  """
+  populates the OU-based tree, mapping account/OU to billing data.  if users
+  are in the bill, but not in the AWS org (due to leaving), the left-over
+  accounts are returned.
+
+  args:
+    tree:  root node object
+    user_dict:  dict created from parsing billing file
+
+  returns:
+    user_dict:  dict containing left-over users
+  """
+  current_node = tree
+  children = get_ou_children(current_node.id)
+
+  accounts = get_accounts_for_ou(current_node.id)
+  if accounts:
+    for id, name in accounts:
+      if id not in user_dict:
+        # account has zero spend!
+        current_node.add_account((id, name, 0.0))
+      else:
+        total = user_dict[id]['total']
+        currency = user_dict[id]['currency']
+        current_node.add_account((id, name, total, currency))
+        #del user_dict[id]
+
+  if children is not None:
+    for id, name in children:
+      current_node.add_child(id=id, name=name)
+    for child in current_node.children:
+      populate_tree(child, user_dict)
+
+  return user_dict
+
+def generate_simple_report(user_dict, limit, display_ids):
   """
   generate the billing report, categorized by OU.
 
@@ -106,93 +228,36 @@ def generate_report(user_dict, limit, display_ids, use_ou, full):
   locale.setlocale(locale.LC_ALL, '') # for comma formatting
   total_spend = 0
   report = ''
-  project_dict = collections.defaultdict(list)
+  account_details = list()
 
   # for each user, get the OU that they are the member of
   for id in user_dict.keys():
     u = user_dict[id]
-    logging.debug('parsing %s %s' % (u['name'], id))
-
-    if use_ou:
-      ou_name = get_ou_name(id)
-    else:
-      ou_name = 'ROOT'
-
     total_spend = total_spend + u['total']
-    project_dict[ou_name].append((u['name'], id, u['total'], u['currency']))
+    account_details.append((u['name'], id, u['total'], u['currency']))
 
   sum_str = locale.format('%.2f', total_spend, grouping=True)
-  if (full and use_ou) or (not full and not use_ou) or (use_ou and not full):
-    report = report + \
-             '== Current AWS totals:  $%s USD (only shown below: > $%s) ==\n\n' \
-             % (sum_str, limit)
-  else:
-    full = False # so we always skip the last if statement
-    report = report + '\n\n'
+  report = report + \
+           '== Current AWS totals:  $%s USD (only shown below: > $%s) ==\n\n' \
+           % (sum_str, limit)
 
-  for p in sorted(project_dict.keys()):
-    report = report + "Project/Group: %s\n" % p
+  for acct in sorted(account_details, key = lambda acct: -acct[2]):
+    (acct_name, acct_num, acct_total, acct_total_currency) = acct
 
-    subtotal = 0
-    for t in sorted(project_dict[p], key = lambda t: -t[2]):
-      (acct_name, acct_num, acct_total, acct_total_currency) = t
-      subtotal = subtotal + acct_total
-      if acct_total < limit:
-        continue
-      acct_total_str = locale.format("%.2f", acct_total, grouping=True)
+    if acct_total < limit:
+      continue
 
-      if display_ids:
-        report = report + "{:<25}\t({})\t{} {}\n".format(acct_name, acct_num,
-                                                         acct_total_str,
-                                                         acct_total_currency)
-      else:
-        report = report + "{:<25}\t\t${} {}\n".format(acct_name,
-                                                      acct_total_str,
-                                                      acct_total_currency)
-
-    subtotal_str = locale.format("%.2f", subtotal, grouping=True)
-    report = report + "Subtotal: $%s USD\n\n" % subtotal_str
-
-  if full:
-    use_ou = False
-    report = report + "== All accounts, sorted by spend: =="
-    report = report + generate_report(user_dict, limit, display_ids, use_ou, full)
+    acct_total_str = locale.format("%.2f", acct_total, grouping=True)
+    if display_ids:
+      report = report + "{:<25}\t({})\t{} {}\n".format(acct_name, acct_num,
+                                                       acct_total_str,
+                                                       acct_total_currency)
+    else:
+      report = report + "{:<25}\t\t${} {}\n".format(acct_name,
+                                                    acct_total_str,
+                                                    acct_total_currency)
 
   return report
-
-def get_ou_name(id):
-  """
-  get the name of the OU an account belongs to.
-
-  args:
-    - id:  AWS id
-
-  returns:
-    - ou_name:  string containing the name of the OU
-  """
-  client = boto3.client('organizations')
-
-  # handle accounts going away -- dump them in ROOT by default
-  try:
-    ou_r = client.list_parents(ChildId=id)
-    ou_id = ou_r['Parents'][0]['Id']
-  except ClientError as e:
-    if e.response['Error']['Code'] == 'ChildNotFoundException':
-      return 'ROOT'
-    else:
-      raise e
-
-  # handle the case of an OU's parent being root.
-  try:
-    ou_name_r = client.describe_organizational_unit(OrganizationalUnitId=ou_id)
-    ou_name = ou_name_r['OrganizationalUnit']['Name']
-  except ClientError as e:
-    if e.response['Error']['Code'] == 'InvalidInputException':
-      ou_name = 'ROOT'
-    else:
-      raise e
-
-  return ou_name
 
 def send_email(report, weekly):
   """
@@ -349,10 +414,36 @@ def main():
           "--weekly or --monthly")
     sys.exit(-1)
 
+  report = ''
   billing_data = get_latest_bill(args.id, args.bucket, args.local, args.save)
   user_dict = parse_billing_data(billing_data)
-  report = generate_report(user_dict, args.limit, args.display_ids,
-                           args.ou, args.full)
+
+  # no OU tree, just spew out the report
+  if not args.ou:
+    report = generate_simple_report(user_dict, args.limit, args.display_ids)
+
+  else:
+    root = init_tree(args.id)
+    populate_tree(root, user_dict)
+    sum_str = locale.format('%.2f', root.node_spend, grouping=True)
+    report = report + \
+           '== Current AWS totals:  $%s USD (only shown below: > $%s) ==\n\n' \
+           % (sum_str, args.limit)
+
+    old_stdout = sys.stdout
+    tree_output = StringIO()
+    sys.stdout = tree_output
+
+    root.print_tree(limit=args.limit, display_ids=args.display_ids)
+
+    sys.stdout = old_stdout
+    report = report + tree_output.getvalue()
+
+    # add the basic report to the end if desired
+    if args.full:
+      report = report + '\n\n'
+      report = report + generate_simple_report(user_dict, args.limit,
+                                               args.display_ids)
 
   if not args.quiet:
     print(report)
