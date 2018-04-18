@@ -25,3 +25,5 @@
     - zlib1g-dev
     - device-tree-compiler
     - pkg-config
+    - chrpath
+    - diffstat
