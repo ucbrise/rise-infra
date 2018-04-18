@@ -14,3 +14,12 @@
     - python3-funcsigs
     - flex
     - bison
+
+- name: ray tune dependencies
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
+  with_items:
+    - libsox-fmt-mp3 
