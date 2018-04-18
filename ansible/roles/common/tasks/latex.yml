@@ -1,0 +1,9 @@
+- name: latex stuff
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
+  with_items:
+    - texlive-full
+    - texlive-latex-extra
