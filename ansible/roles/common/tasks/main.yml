@@ -8,6 +8,7 @@
 - include_tasks: ray.yml
 - include_tasks: riscv.yml
 - include_tasks: tensorflow.yml
+- include_tasks: docker.yml
 #- include_tasks: bazel.yml
 - include_tasks: locales.yml
 - include_tasks: sysutils.yml
