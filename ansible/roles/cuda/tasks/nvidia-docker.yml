@@ -1,0 +1,19 @@
+- name: nvidia-docker repo list
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    filename: docker
+  with_items:
+    - 'deb https://nvidia.github.io/libnvidia-container/ubuntu16.04/$(ARCH) /'
+    - 'deb https://nvidia.github.io/nvidia-container-runtime/ubuntu16.04/$(ARCH) /'
+    - 'deb https://nvidia.github.io/nvidia-docker/ubuntu16.04/$(ARCH) /'
+
+- name: nvidia-docker repo key
+  apt_key:
+    url: "https://nvidia.github.io/nvidia-docker/gpgkey"
+    state: present
+
+- name: nvidia-docker install
+  apt:
+    name: nvidia-docker2
+    state: present
