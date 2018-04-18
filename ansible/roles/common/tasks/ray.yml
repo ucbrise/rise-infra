@@ -12,3 +12,5 @@
     - python3-numpy
     - python-funcsigs
     - python3-funcsigs
+    - flex
+    - bison

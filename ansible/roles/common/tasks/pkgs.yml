@@ -49,3 +49,5 @@
     - gettext
     - autoconf
     - pkg-config
+    - flex
+    - bison
