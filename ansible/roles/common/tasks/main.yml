@@ -4,6 +4,7 @@
 - include_tasks: java.yml
 - include_tasks: python.yml
 - include_tasks: r-lang.yml
+- include_tasks: latex.yml
 - include_tasks: ray.yml
 - include_tasks: riscv.yml
 - include_tasks: tensorflow.yml
