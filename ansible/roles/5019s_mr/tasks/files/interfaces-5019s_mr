@@ -1,0 +1,17 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+#
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+# Sometimes, Supermicro systems get weird about PCIe addressing
+# Thus, we list both of the onboard gigabit interfaces. Sigh.
+# 
+auto igb0
+iface igb0 inet dhcp
+
+auto igb1
+iface igb1 inet dhcp
