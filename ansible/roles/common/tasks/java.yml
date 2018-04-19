@@ -2,6 +2,10 @@
   apt_repository:
     repo: "ppa:webupd8team/java"
 
+- name: Add Java 10 repository. RIP Java 9
+  apt_repository:
+    repo: "ppa:linuxuprising/java"
+
 # OMFG - this module sets this value to be "True", not "true"
 # OMFG - this is so broken
 #
@@ -24,9 +28,9 @@
   with_items:
     - oracle-java8-installer
     - oracle-java8-unlimited-jce-policy
-    - oracle-java9-installer
-    - oracle-java9-unlimited-jce-policy
-    - oracle-java8-set-default
+    - oracle-java10-installer
+    #- oracle-java10-unlimited-jce-policy # doesn't exist ... yet?
+    - oracle-java10-set-default
 
 - name: SBT repo
   apt_repository:
