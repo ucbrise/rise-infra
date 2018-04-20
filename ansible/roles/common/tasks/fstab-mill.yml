@@ -10,4 +10,4 @@
   file:
     path: "/work"
     state: directory
-    mode: 1777
+    mode: 01777

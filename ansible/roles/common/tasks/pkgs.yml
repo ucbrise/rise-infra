@@ -51,7 +51,7 @@
     - pkg-config
     - flex
     - bison
-    - clang-format-3.8 # Alexey really likes this version 
+    - clang-format-3.8 # Alexey really likes this version
     - protobuf-compiiler
     - protobuf-c-compiler
     - python-protobuf
