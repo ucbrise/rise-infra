@@ -1,0 +1,8 @@
+---
+- name: RISE Supermicro 5019S-MR SGX systems
+  hosts: sgx-5019s_mr
+  become: yes
+  roles:
+    - 5019s_mr
+    - common
+    - sgx

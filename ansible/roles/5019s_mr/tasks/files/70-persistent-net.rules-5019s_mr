@@ -1,0 +1,4 @@
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="igb", KERNELS=="0000:02:00.0", NAME="igb0"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="igb", KERNELS=="0000:03:00.0", NAME="igb1"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="ixgbe", KERNELS=="0000:01:00.0", NAME="ixgbes0"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="ixgbe", KERNELS=="0000:01:00.1", NAME="ixgbes1"
