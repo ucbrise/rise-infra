@@ -55,6 +55,4 @@
     - protobuf-compiiler
     - protobuf-c-compiler
     - python-protobuf
-    - python3-protobuf
-    - r-cran-rprotobuf
     - golang-goprotobuf-dev
