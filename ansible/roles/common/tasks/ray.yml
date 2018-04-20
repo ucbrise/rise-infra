@@ -22,4 +22,4 @@
     update-cache: yes
     force: yes
   with_items:
-    - libsox-fmt-mp3 
+    - libsox-fmt-mp3
