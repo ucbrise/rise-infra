@@ -1,0 +1,9 @@
+- name: udev rules for 5019s-mr ethernet device naming
+  copy:
+    src: 70-persistent-net.rules-5019s_mr
+    dest: /etc/udev/rules.d/70-persistent-net.rules
+
+- name: s1200sp network interface config
+  copy:
+    dest: /etc/network/interfaces
+    src: interfaces-5019s_mr
