@@ -1,0 +1,8 @@
+---
+- name: RISE Supermicro S1200SPO SGX systems
+  hosts: sgx-s1200spo
+  become: yes
+  roles:
+    - s1200spo
+    - common
+    - sgx

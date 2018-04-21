@@ -1,0 +1,9 @@
+- name: udev rules for s1200spo ethernet device naming
+  copy:
+    src: 70-persistent-net.rules-s1200spo
+    dest: /etc/udev/rules.d/70-persistent-net.rules
+
+- name: s1200spo network interface config
+  copy:
+    src: interfaces-s1200spo
+    dest: /etc/network/interfaces
