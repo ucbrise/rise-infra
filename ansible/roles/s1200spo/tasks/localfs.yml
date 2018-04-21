@@ -1,15 +1,9 @@
-# handle manually until we can wrangle megacli and megaraid inconsistent PCIe addresses
-#- name: apply ext[234] label to /dev/whatever-home-is-on
-#  command: e2label /dev/whatever-home-is-on home
+#  created via the installer, mountpoint and all
+#  including label, and everything, but it leaves everything uuid-ified :(
 
-- name: use labels for /home
+- name: de-uuidify /home in /etc/fstab - use labels for /home
   lineinfile:
     path: /etc/fstab
-    state: present
-    line: 'LABEL=home	/home		ext4	defaults 0	1'
-
-#- name: Create /data directory
-#  file:
-#    path: "/home"
-#    state: directory
-#    mode: 00000
+    backrefs: yes
+    regexp: '^(UUID=.*\s+/home\s+)(.*)'
+    line: 'LABEL=home	/home		\2'
