@@ -1,5 +1,5 @@
-- name: apply ext[234] label to /dev/md0
-  command: e2label /dev/md0 root
+#  created via the installer, mountpoint and all
+#  including label, and everything, but it leaves everything uuid-ified :(
 
 - name: de-uuidify /etc/fstab - use labels for rootfs
   lineinfile:
