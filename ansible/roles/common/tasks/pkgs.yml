@@ -52,7 +52,7 @@
     - flex
     - bison
     - clang-format-3.8 # Alexey really likes this version
-    - protobuf-compiiler
+    - protobuf-compiler
     - protobuf-c-compiler
     - python-protobuf
     - golang-goprotobuf-dev
