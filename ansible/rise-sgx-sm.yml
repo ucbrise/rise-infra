@@ -5,4 +5,4 @@
   roles:
     - 5019s_mr
     - common
-    - sgx
+    - rise-sgx

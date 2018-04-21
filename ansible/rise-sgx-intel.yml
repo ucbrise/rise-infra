@@ -5,4 +5,4 @@
   roles:
     - s1200spo
     - common
-    - sgx
+    - rise-sgx
