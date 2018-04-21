@@ -1,0 +1,15 @@
+# handle manually until we can wrangle megacli and megaraid inconsistent PCIe addresses
+#- name: apply ext[234] label to /dev/whatever-home-is-on
+#  command: e2label /dev/whatever-home-is-on home
+
+- name: use labels for /home
+  lineinfile:
+    path: /etc/fstab
+    state: present
+    line: 'LABEL=home	/home		ext4	defaults 0	1'
+
+#- name: Create /data directory
+#  file:
+#    path: "/home"
+#    state: directory
+#    mode: 00000

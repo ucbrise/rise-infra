@@ -1,0 +1,4 @@
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="igb", KERNELS=="0000:04:00.0", NAME="igb0"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="igb", KERNELS=="0000:05:00.0", NAME="igb1"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="mlx4_core", KERNELS=="0000:01:00.0", ATTR{dev_port}=="0", NAME="mlx4e0"
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="mlx4_core", KERNELS=="0000:01:00.0", ATTR{dev_port}=="1", NAME="mlx4e1"
