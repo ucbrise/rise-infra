@@ -1,0 +1,35 @@
+- name: first reset all NIS entries
+  lineinfile:
+    path: /etc/passwd
+    state: absent
+    regexp: '^\+'
+
+- name: then add rise-l netgroup to /etc/passwd
+  lineinfile:
+    path: /etc/passwd
+    line: '+@rise-sgx-l::::::'
+
+- name: finally add rise-sgx-l netgroup to /etc/passwd
+  lineinfile:
+    path: /etc/passwd
+    line: '+@rise-sgx-l::::::'
+
+- name: login access for staff, NIS entries before netgroups
+  lineinfile:
+    path: /etc/passwd
+    line: '+{{ item }}::::::'
+    insertbefore: '^\+@'
+  with_items:
+    - jkuroda
+    - sknapp
+
+- name: sudo root access for selected researchers
+  lineinfile:
+    path: /etc/sudoers.d/rsgx-root
+    line: "{{ item }} ALL=(ALL) ALL"
+    create: yes
+    mode: 0400
+    validate: "visudo -cf %s"
+  with_items:
+    - json
+    - chiache
