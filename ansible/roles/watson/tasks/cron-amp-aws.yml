@@ -49,4 +49,4 @@
     day: 28-31
     # month: * # default
     # weekday: * # default
-    job: '[[ "$(date --date=tomorrow +\%d)" == "01" ]] && /project/cs/amp/aws/bin/aws-audit.py --monthly --email --ou --bucket amp_billing_bucket --id 117716615155 --full --csv /project/cs/amp/aws/csv_reports/individual_spends.csv --orgcsv /project/cs/amp/aws/csv_reports/project_spends.csv'
+    job: '[[ "$(date --date=tomorrow +\%d)" == "01" ]] && /project/cs/amp/aws/bin/aws-audit.py --monthly --email --ou --bucket amp_billing_bucket --id 117716615155 --full --csv /project/cs/amp/aws/csv_reports/individual_spends.csv --orgcsv /project/cs/amp/aws/csv_reports/project_spends.csv --plot'
