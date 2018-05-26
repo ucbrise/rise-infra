@@ -6,6 +6,7 @@
 - include_tasks: r-lang.yml
 - include_tasks: latex.yml
 - include_tasks: ray.yml
+- include_tasks: clipper.yml
 - include_tasks: riscv.yml
 - include_tasks: tensorflow.yml
 - include_tasks: docker.yml
