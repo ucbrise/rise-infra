@@ -1,0 +1,34 @@
+# from https://github.com/dcrankshaw/clipper/blob/high-perf-clipper/install_clipper_deps.sh, per RISE #2355
+
+- name: clipper dev requirements
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+    force: yes
+  with_items:
+    - autoconf
+    - automake
+    - autoconf-archive
+    - libtool
+    - libboost-all-dev
+    - libevent-dev
+    - libdouble-conversion-dev
+    - libgoogle-glog-dev
+    - libgflags-dev
+    - liblz4-dev
+    - liblzma-dev
+    - libsnappy-dev
+    - make
+    - zlib1g-dev
+    - binutils-dev
+    - libjemalloc-dev
+    - libssl-dev
+    - pkg-config
+    - libiberty-dev
+    - git
+    - cmake
+    - libev-dev
+    - libhiredis-dev
+    - libzmq5
+    - libzmq5-dev
