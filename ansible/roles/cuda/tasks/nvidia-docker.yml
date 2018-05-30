@@ -2,7 +2,8 @@
   apt_repository:
     repo: "{{ item }}"
     state: present
-    filename: docker
+    filename: nvidia-docker
+    update_cache: yes
   with_items:
     - 'deb https://nvidia.github.io/libnvidia-container/ubuntu16.04/$(ARCH) /'
     - 'deb https://nvidia.github.io/nvidia-container-runtime/ubuntu16.04/$(ARCH) /'
@@ -17,3 +18,4 @@
   apt:
     name: nvidia-docker2
     state: present
+    update_cache: yes
