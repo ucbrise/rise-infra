@@ -14,3 +14,20 @@
     name: docker-ce
     state: present
     update_cache: yes
+
+- name: add a "docker" group
+  group:
+    name: docker
+    state: present
+    gid: 998
+    system: yes
+
+- name: add people to docker group
+  user:
+    name: '{{ item }}'
+    groups: docker
+    append: yes
+  with_items:
+    - crankshaw
+    - czumar
+    - ges
