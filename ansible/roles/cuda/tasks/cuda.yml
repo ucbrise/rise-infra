@@ -1,6 +1,6 @@
 - name: cuda repo
   apt:
-    deb: http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+    deb: http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.2.88-1_amd64.deb
     update_cache: yes
 
 - name: cuda repo key
@@ -9,7 +9,7 @@
     id: 7FA2AF80
     state: present
 
-- name: cuda-9.0 and cuda-8-0 without all the extra cruft
+- name: cuda 9.2 cuda-9.1 cuda-9.0 and cuda-8-0 without all the extra cruft
   apt:
     pkg: "{{ item }}"
     state: present
@@ -18,6 +18,8 @@
     install_recommends: no
   with_items:
     - cuda
+    - cuda-9.1
+    - cuda-9.0
     - cuda-8-0
 
 - name: our gpustat deb
