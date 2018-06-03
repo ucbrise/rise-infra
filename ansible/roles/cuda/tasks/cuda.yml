@@ -18,8 +18,8 @@
     install_recommends: no
   with_items:
     - cuda
-    - cuda-9.1
-    - cuda-9.0
+    - cuda-9-1
+    - cuda-9-0
     - cuda-8-0
 
 - name: our gpustat deb
