@@ -7,6 +7,7 @@
   apt_repository:
     repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable'
     state: present
+    update_cache: yes
     filename: docker
 
 - name: add a "docker" group
