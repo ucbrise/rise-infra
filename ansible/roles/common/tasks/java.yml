@@ -32,15 +32,15 @@
     #- oracle-java10-unlimited-jce-policy # doesn't exist ... yet?
     - oracle-java10-set-default
 
-- name: SBT repo
-  apt_repository:
-    repo: "deb https://dl.bintray.com/sbt/debian /"
-
 - name: SBT apt key
   apt_key:
     keyserver: keyserver.ubuntu.com
     id: 642AC823
     state: present
+
+- name: SBT repo
+  apt_repository:
+    repo: "deb https://dl.bintray.com/sbt/debian /"
 
 - name: SBT install
   apt:

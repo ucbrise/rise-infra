@@ -1,12 +1,12 @@
-- name: le-vert hardware raid tools repo
-  apt_repository:
-    repo: "deb http://hwraid.le-vert.net/ubuntu xenial main"
-
 - name: le-vert hardware raid tools repo key
   apt_key:
     keyserver: keyserver.ubuntu.com
     id: 6005210E23B3D3B4
     state: present
+
+- name: le-vert hardware raid tools repo
+  apt_repository:
+    repo: "deb http://hwraid.le-vert.net/ubuntu xenial main"
 
 - name: useful system utilities
   apt:
