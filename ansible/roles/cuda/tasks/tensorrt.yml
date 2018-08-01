@@ -1,0 +1,7 @@
+- name: Install tensorrt for cuda-9.2, cuda-9.0, and cuda-8.0
+  apt:
+    deb: "{{ item }}"
+  with_items:
+  - https://research.eecs.berkeley.edu/pkgs/tensorrt/nv-tensorrt-repo-ubuntu1604-cuda8.0-ga-trt4.0.1.6-20180612_1-1_amd64.deb
+  - https://research.eecs.berkeley.edu/pkgs/tensorrt/nv-tensorrt-repo-ubuntu1604-cuda9.0-ga-trt4.0.1.6-20180612_1-1_amd64.deb
+  - https://research.eecs.berkeley.edu/pkgs/tensorrt/nv-tensorrt-repo-ubuntu1604-cuda9.2-ga-trt4.0.1.6-20180612_1-1_amd64.deb
