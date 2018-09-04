@@ -38,6 +38,7 @@
     - libiomp-doc # Intel openMP libs
     - ffmpeg
     - libfftw3-dev # useful imaging utlities
+    - libcurl4-nss-dev
 
 - name: Generally Useful SW Dev packages
   apt:
