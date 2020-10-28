@@ -16,36 +16,25 @@ import time
 
 locale.setlocale(locale.LC_ALL, '') # for comma formatting
 
-PROJECT_PREAMBLE = collections.defaultdict(dict)
-PROJECTS = ['MC2', 'Ray', 'ERDOS']
-PROJECT_PREAMBLE['MC2'] = '''
-SOME TEXT
-'''
-PROJECT_PREAMBLE['Ray'] = '''
-zomg text
-'''
+#PROJECTS = ['MC2', 'ERDOS']
+PROJECTS = ['Ray']
 
-PROJECT_PREAMBLE['ERDOS'] = '''
-even MOAR text
-'''
-
-MAIL_SERVER = "watson"
+MAIL_SERVER = "localhost"
 EMAIL_FROM_ADDR = "risecamp@cs.berkeley.edu"
-EMAIL_REPLY_ADDR = "sknapp+spamcannon@berkeley.edu"
+EMAIL_REPLY_ADDR = "risecamp@cs.berkeley.edu"
 
 EMAIL_SUBJECT = "IMPORTANT: RISECamp 2020 Tutorial Links"
 
 EMAIL_PREAMBLE = """
-Greetings from RISELab!  Here are the details for your online tutorials:
-
-
+Greetings from RISELab!  Here are the links for your online tutorials for Thursday, Oct 29 2020:
 """
+# Greetings from RISELab!  Here are the links for your online tutorials for Friday, Oct 30 2020:
 
-def generate_spam(attendee_hash, send_email=False, delay=1):
+def generate_spam(attendee_hash, send_email=True, delay=1):
     """
     for each hash entry in destination, send a corresponding set of project links
     """
-    outfile = './OUT'
+    outfile = '/tmp/OUT'
 
     burst = 60 # 60 emails before pause
     pause = 30 # pause for 30
@@ -54,21 +43,26 @@ def generate_spam(attendee_hash, send_email=False, delay=1):
     of = open(outfile, 'w')
 
     for email in attendee_hash:
-        message_body = EMAIL_PREAMBLE + \
-                       '--------------------\n\n'
+        print(attendee_hash[email])
+        message_body = attendee_hash[email]['fname'] + ' ' + attendee_hash[email]['lname'] + ',' + \
+	               EMAIL_PREAMBLE + \
+                       '\n'
 
         for project in PROJECTS:
-            message_body += PROJECT_PREAMBLE[project] + \
-                            attendee_hash[email][project.lower() +'-ip'] + '\n\n'
+            message_body += project + '\n' + \
+                            attendee_hash[email][project.lower() + '-ip'] + '\n\n'
 
         message_body += """
-Please use Slack for technical support
+Please join the RISECamp 2020 Slack workspace for discussion and technical support:
+https://join.slack.com/t/risecamp20/shared_invite/zt-i420qexf-o1p~dtY9GntwBYi4AAwNnQ
         """
         of.write('\n' + email)
         of.write(message_body)
 
         if send_email:
+            print('sending email to %s' % email)
             if count == burst:
+                print('sleeping for %s' % pause)
                 count = 0
                 time.sleep(pause)
 
