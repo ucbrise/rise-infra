@@ -7,15 +7,10 @@ SPAMCANNON!
 import argparse
 import collections
 import csv
-import datetime
 from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
-from io import StringIO
 import locale
-import os
 import smtplib
-import socket
 import sys
 import time
 
@@ -34,12 +29,6 @@ PROJECT_PREAMBLE['ERDOS'] = '''
 even MOAR text
 '''
 
-TODAY = datetime.date.today()
-DAY = TODAY.strftime('%d')
-MONTH = TODAY.strftime('%m')
-MONTH_NAME = TODAY.strftime('%B')
-YEAR = TODAY.strftime('%Y')
-
 MAIL_SERVER = "watson"
 EMAIL_FROM_ADDR = "risecamp@cs.berkeley.edu"
 EMAIL_REPLY_ADDR = "sknapp+spamcannon@berkeley.edu"
@@ -56,9 +45,13 @@ def generate_spam(attendee_hash, send_email=False, delay=1):
     """
     for each hash entry in destination, send a corresponding set of project links
     """
+    outfile = './OUT'
+
     burst = 60 # 60 emails before pause
     pause = 30 # pause for 30
     count = 0
+
+    of = open(outfile, 'w')
 
     for email in attendee_hash:
         message_body = EMAIL_PREAMBLE + \
@@ -71,8 +64,8 @@ def generate_spam(attendee_hash, send_email=False, delay=1):
         message_body += """
 Please use Slack for technical support
         """
-
-        print(message_body)
+        of.write('\n' + email)
+        of.write(message_body)
 
         if send_email:
             if count == burst:
@@ -90,10 +83,11 @@ Please use Slack for technical support
 
             s = smtplib.SMTP(MAIL_SERVER)
             s.sendmail(EMAIL_FROM_ADDR,
-                       [EMAIL_TO_ADDR],
+                       [email],
                        msg.as_string())
             time.sleep(delay)
             count = count + 1
+
 
 def parse_attendees(input_data):
     """
@@ -146,11 +140,10 @@ def parse_args():
 
 def main():
     args = parse_args()
-    print(args)
-    if not args.input:
-        sys.exit(-1)
 
-    print(args.email)
+    if not args.input:
+        print('please enter a delay in seconds (float)')
+        sys.exit(-1)
 
     attendees = parse_attendees(args.input)
     generate_spam(attendees)
