@@ -142,7 +142,7 @@ def main():
     args = parse_args()
 
     if not args.input:
-        print('please enter a delay in seconds (float)')
+        print('please provide the path to the csv file')
         sys.exit(-1)
 
     attendees = parse_attendees(args.input)
